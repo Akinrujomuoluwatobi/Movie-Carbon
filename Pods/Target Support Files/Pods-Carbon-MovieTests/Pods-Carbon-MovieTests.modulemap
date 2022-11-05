@@ -1,0 +1,6 @@
+framework module Pods_Carbon_MovieTests {
+  umbrella header "Pods-Carbon-MovieTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
