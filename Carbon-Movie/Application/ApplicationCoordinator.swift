@@ -31,6 +31,9 @@ final class ApplicationCoordinator: BaseCoordinator {
 			self.launchMovieDetail(movie)
 		}
 		
+		listMoviesRoutes.showFavourites = { [weak self] in
+			self?.launchFavourites()
+		}
 		navigationController.setViewControllers([listMoviesRoutes.viewController], animated: true)
 	}
 	
@@ -39,5 +42,16 @@ final class ApplicationCoordinator: BaseCoordinator {
 			.make(movie)
 		
 		navigationController.pushViewController(movieDetailRoutes.viewController, animated: true)
+	}
+	
+	private func launchFavourites() {
+		let favouriteRoutes = container.resolve(FavouritesRoutesFactory.self)!
+			.make(nil)
+		
+		favouriteRoutes.showMovieDetails = { movie in
+			self.launchMovieDetail(movie)
+		}
+		
+		navigationController.pushViewController(favouriteRoutes.viewController, animated: true)
 	}
 }

@@ -10,6 +10,7 @@ target 'Carbon-Movie' do
 		pod 'SVProgressHUD'
 		pod 'Kingfisher', '~> 7.0'
 		pod 'IQKeyboardManagerSwift'
+		pod 'RealmSwift', '~>10'
   # Pods for Carbon-Movie
 
   target 'Carbon-MovieTests' do

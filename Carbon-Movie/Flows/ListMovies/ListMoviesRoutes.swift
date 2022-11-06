@@ -9,4 +9,5 @@ import Foundation
 
 protocol ListMoviesRoutes: ViewControllerRoutes {
 	var showMovieDetails: ((Movie) -> Void)? { get set }
+	var showFavourites: (() -> Void)? { get set }
 }

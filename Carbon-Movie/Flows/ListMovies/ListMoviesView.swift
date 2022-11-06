@@ -9,6 +9,8 @@ import UIKit
 
 class ListMoviesView: View {
 	
+	// MARK: - Implemented Views
+	
 	let searchTextField: UITextField = {
 		let textField = UITextField()
 		textField.placeholder = "Search by genre, directors"
@@ -27,7 +29,6 @@ class ListMoviesView: View {
 		button.setTitleColor(.white, for: .normal)
 		button.applyCornerRadius(radius: 10, borderColor: .systemPurple)
 
-		
 		return button
 	}()
 	
@@ -49,6 +50,8 @@ class ListMoviesView: View {
 		tableView.showsVerticalScrollIndicator = false
 		return tableView
 	}()
+	
+	// MARK: - Override functions
 	
 	override func setupViewHierarchy() {
 		addSubviews([label, listTable, searchTextField, searchButton])

@@ -38,7 +38,7 @@ class MovieDetailViewController: ViewController<MovieDetailView>, MovieDetailRou
 			.observe(on: MainScheduler.instance)
 			.subscribe(onNext: { movie in
 				guard let movie = movie else { return }
-				self.title = movie.title ?? ""
+				self.title = movie.title
 			})
 			.disposed(by: disposeBag)
 		
@@ -48,5 +48,24 @@ class MovieDetailViewController: ViewController<MovieDetailView>, MovieDetailRou
 				guard let detail = detail else { return }
 				self.customView.load(movieDetail: detail)
 			}).disposed(by: disposeBag)
+		
+		presenter.isMovieExist
+			.observe(on: MainScheduler.instance)
+			.subscribe(onNext: { isSaved in
+				self.customView.updateButton(isSaved: isSaved)
+			}).disposed(by: disposeBag)
+		
+	}
+	
+	override func setupCallbacks() {
+		customView.addFavourite.addTarget(self, action: #selector(addFavouriteTapped), for: .touchUpInside)
+	}
+	
+	@objc func addFavouriteTapped() {
+		if presenter.isFavourite {
+			presenter.removeFavourite()
+		} else {
+			presenter.addFavourite()
+		}
 	}
 }

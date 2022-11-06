@@ -1,14 +1,14 @@
 //
-//  ListMoviesViewController.swift
+//  FavouritesViewController.swift
 //  Carbon-Movie
 //
-//  Created by Oluwatobiloba Akinrujomu on 04/11/2022.
+//  Created by Oluwatobiloba Akinrujomu on 06/11/2022.
 //
 
 import UIKit
 import RxSwift
 
-class ListMoviesViewController: ViewController<ListMoviesView>, ListMoviesRoutes, LoadablePresenterContainer, ErrorThrowablePresenterContainer {
+class FavouritesViewController: ViewController<FavouritesView>, FavouritesRoutes, LoadablePresenterContainer, ErrorThrowablePresenterContainer {
 	var loadablePresenter: LoadablePresenter {
 		return presenter
 	}
@@ -23,15 +23,13 @@ class ListMoviesViewController: ViewController<ListMoviesView>, ListMoviesRoutes
 	
 	var showMovieDetails: ((Movie) -> Void)?
 	
-	var showFavourites: (() -> Void)?
-	
-	init(view: ListMoviesView, presenter: ListMoviesPresenter) {
+	init(view: FavouritesView, presenter: ListMoviesPresenter) {
 		self.presenter = presenter
 		super.init(view: view)
 	}
 	
-	override func setupProperties() {
-		navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Favourites", style: .plain, target: self, action: #selector(launchFavourites))
+	override func viewWillAppear(_ animated: Bool) {
+		presenter.fetchFavourite()
 	}
 	
 	override func setupBehaviour() {
@@ -46,36 +44,24 @@ class ListMoviesViewController: ViewController<ListMoviesView>, ListMoviesRoutes
 				self.customView.listTable.reloadData()
 			}).disposed(by: disposeBag)
 	}
-	
-	override func setupCallbacks() {
-		customView.searchButton.addTarget(self, action: #selector(searchButtonPressed), for: .touchUpInside)
-	}
-	
-	@objc func launchFavourites() {
-		showFavourites?()
-	}
-	
-	@objc func searchButtonPressed() {
-		guard let searchTerm = customView.searchTextField.text else { return }
-		presenter.getMovies(search: searchTerm)
-	}
+
 }
 
-extension ListMoviesViewController: UITableViewDelegate, UITableViewDataSource {
+extension FavouritesViewController: UITableViewDelegate, UITableViewDataSource {
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		
-		return presenter.movies.value.count
+		return presenter.favouriteMovies.value.count
 	}
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeue(dequeueableCell: MoviewCell.self, forIndexPath: indexPath)
-		cell.feed(with: presenter.movies.value[indexPath.row])
+		cell.feed(with: presenter.favouriteMovies.value[indexPath.row])
 		
 		return cell
 	}
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		self.showMovieDetails?(presenter.movies.value[indexPath.row])
+		self.showMovieDetails?(presenter.favouriteMovies.value[indexPath.row])
 	}
 	
 }

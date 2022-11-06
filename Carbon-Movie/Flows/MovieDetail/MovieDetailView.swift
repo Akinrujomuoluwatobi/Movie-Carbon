@@ -100,8 +100,17 @@ class MovieDetailView: View {
 		return view
 	}()
 	
+	let addFavourite: UIButton = {
+		let button = UIButton(type: .custom)
+		button.setTitleColor(.white, for: .normal)
+		button.applyCornerRadius(radius: 10, borderColor: .clear)
+		
+		return button
+	}()
+	
+	
 	override func setupViewHierarchy() {
-		addSubviews([posterImage, movieTitle, movieTypeView, movieYear, movieActors, movieDirectors, awardWon, moviePlot, movieLanguage, movieRuntime])
+		addSubviews([posterImage, movieTitle, movieTypeView, movieYear, movieActors, movieDirectors, awardWon, moviePlot, movieLanguage, movieRuntime, addFavourite])
 		movieTypeView.addSubview(movieType)
 	}
 	
@@ -174,6 +183,14 @@ class MovieDetailView: View {
 			trailing: trailingAnchor,
 			padding: .init(top: 20, left: 16, bottom: 0, right: 16)
 		)
+		
+		addFavourite.anchor(
+			leading: leadingAnchor,
+			bottom: bottomAnchor,
+			trailing: trailingAnchor,
+			padding: .init(top: 0, left: 16, bottom: 30, right: 16),
+			size: .init(width: 0, height: 42)
+		)
 	}
 	
 	func load(movieDetail: MovieDetailsModel) {
@@ -222,4 +239,8 @@ class MovieDetailView: View {
 		posterImage.kf.setImage(with: url)
 	}
 	
+	func updateButton(isSaved: Bool) {
+		addFavourite.setTitle(isSaved ? "Remove Favourite" : "Add to Favourite", for: .normal)
+		addFavourite.backgroundColor = isSaved ? .red : .systemGreen
+	}
 }
